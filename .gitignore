@@ -1,0 +1,31 @@
+# .gitignore
+
+# 1. Ambiente Virtual Python (MUITO IMPORTANTE)
+# Ignora a pasta inteira do ambiente virtual. 
+# O venv armazena bibliotecas instaladas localmente (gigabytes de dados).
+.venv/
+venv/
+
+# 2. Arquivos de Cache e Build do Python
+# Arquivos .pyc e a pasta __pycache__ gerados pelo Python para otimizar a execução.
+__pycache__/
+*.pyc
+
+# 3. Logs e Dados Gerados Automaticamente
+# Ignora a pasta de saída que contém os resultados da análise por livro e o CSV final.
+output/
+*.log
+
+# 4. Arquivos do Sistema Operacional e do Editor
+# Ignora arquivos temporários e de configuração do VS Code.
+.DS_Store
+.vscode/
+
+# 5. Arquivos de Raspagem (Selenium) e Visualização Interativa
+# O Pyvis gera estes arquivos HTML interativos.
+# Ignora os arquivos HTML gerados.
+*.html 
+
+# 6. WebDriver do Selenium
+# O webdriver-manager instala o driver do Chrome, que pode ser grande.
+chromedriver*

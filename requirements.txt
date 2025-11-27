@@ -8,3 +8,4 @@ pyvis
 selenium
 webdriver-manager
 matplotlib
+google-genai # ou google-genai, dependendo da versão

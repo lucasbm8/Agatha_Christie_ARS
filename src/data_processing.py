@@ -8,34 +8,39 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import os
 import logging
+import time
 
 def setup_driver():
     """Configura e retorna o driver do Selenium em modo headless."""
     try:
         chrome_options = Options()
+        # Adicionando argumentos de cabeçalho para evitar detecção
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
-        # Supressão de logs do WebDriver Manager e Selenium
+        # Supressão de logs
         logging.getLogger('WDM').setLevel(logging.NOTSET)
         os.environ['WDM_LOG'] = 'False'
         
+        # O ChromeDriverManager fará o download do driver automaticamente
         webdriver_service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=webdriver_service, options=chrome_options)
         return driver
     except Exception as e:
+        # Se você estiver rodando em um ambiente sem GUI (como Colab), isso falhará.
         print(f"Erro ao configurar o WebDriver. Certifique-se de ter o Chrome instalado: {e}")
         return None
 
 def scrape_characters(driver, path):
-    """
-    Função adaptada da 'raspa' do seu raspagem.ipynb para extrair 
-    personagens por categoria (romances, novelas, peças).
-    """
+    """Extrai personagens de uma categoria de livros na wiki da Agatha Christie."""
     if not driver:
         return pd.DataFrame()
         
     driver.get(path)
+    time.sleep(2) # Pausa para carregar o conteúdo
+    
     # Encontra os links para as categorias dos livros
     categories = driver.find_elements(by=By.CLASS_NAME, value='category-page__member-link')
 
@@ -49,6 +54,8 @@ def scrape_characters(driver, path):
     for book in books:
         print(f"  > Scraping: {book['book_name']}")
         driver.get(book['url'])
+        time.sleep(1) # Pausa para evitar ser bloqueado
+        
         # Encontra os links dos personagens dentro da página da categoria
         character_elems = driver.find_elements(by=By.CLASS_NAME, value='category-page__member-link')
 
@@ -58,15 +65,12 @@ def scrape_characters(driver, path):
     return pd.DataFrame(character_list)
 
 def scrape_and_prepare_data():
-    """
-    Orquestra a raspagem de todas as fontes e junta em um único DataFrame.
-    """
+    """Orquestra a raspagem de todas as fontes e junta em um único DataFrame."""
     driver = setup_driver()
     if not driver:
         return pd.DataFrame()
         
     try:
-        # Caminhos base
         NOVEM_PATH = "https://agathachristie.fandom.com/wiki/Category:Characters_by_novel"
         SHORT_PATH = "https://agathachristie.fandom.com/wiki/Category:Characters_by_short_story"
         PLAY_PATH = "https://agathachristie.fandom.com/wiki/Category:Characters_by_stage_play"
@@ -86,14 +90,10 @@ def scrape_and_prepare_data():
         # 4. Juntando e limpando
         personagens_df = pd.concat([novels_df, short_stories_df, plays_df], ignore_index=True)
         
-        # Aplicando a lógica de remoção de duplicatas do seu notebook
+        # Removendo a coluna 'book' e mantendo apenas 'character' (único)
         personagens_df = personagens_df[['character']].drop_duplicates()
         
         # 5. Adicionando manualmente personagens chave (de 'faltando.txt')
-        # CUIDADO: O 'faltando.txt' deve estar na raiz, ou você precisa ajustar o caminho.
-        # Por simplicidade na modularização, esta lógica deve estar no main.py, mas a movi aqui
-        # para manter a dependência do `personagens.csv` em um só lugar.
-        
         missing_chars_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "faltando.txt")
         if os.path.exists(missing_chars_path):
              with open(missing_chars_path, 'r', encoding='utf-8') as f:
@@ -102,10 +102,7 @@ def scrape_and_prepare_data():
              df_faltando = pd.DataFrame(linhas_faltando, columns=['character'])
              personagens_df = pd.concat([personagens_df, df_faltando], ignore_index=True)
              personagens_df = personagens_df.drop_duplicates(subset=['character'])
-             print(f"Total final de personagens após adição manual: {len(personagens_df)}")
-        else:
-            print("Arquivo 'faltando.txt' não encontrado. Pulando adição manual.")
-            
+        
         return personagens_df[['character']]
         
     finally:

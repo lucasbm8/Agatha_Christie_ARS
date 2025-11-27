@@ -1,0 +1,15 @@
+book_filename,character_name,degree_centrality,betweenness_centrality,closeness_centrality,community_id,murderer_name,is_murderer
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Ariadne Oliver,0.8461538461538463,0.6837606837606838,0.13978494623655913,2,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Judith Butler,0.15384615384615385,0.0,0.0755813953488372,2,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Rowena Drake,0.38461538461538464,0.07692307692307693,0.09027777777777778,1,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Joyce,0.38461538461538464,0.16239316239316237,0.09154929577464789,1,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Ann,0.15384615384615385,0.0,0.08609271523178808,0,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Beatrice,0.3076923076923077,0.1794871794871795,0.10483870967741936,0,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Miss Whittaker,0.23076923076923078,0.0,0.10569105691056911,1,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Mrs. Hargreaves,0.07692307692307693,0.0,0.10077519379844961,2,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Miss Lee,0.07692307692307693,0.0,0.10077519379844961,2,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Eddy,0.15384615384615385,0.047008547008547,0.1092436974789916,1,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Kissing Boy,0.15384615384615385,0.0,0.08024691358024691,2,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Kissing Girl,0.15384615384615385,0.0,0.08024691358024691,2,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Cathie,0.07692307692307693,0.0,0.0546218487394958,1,Not Revealed in Text,0
+Hallowe'en Party_ A Hercule Poi - Agatha Christie.txt,Mrs. Goodbody,0.07692307692307693,0.0,0.05603448275862069,0,Not Revealed in Text,0
