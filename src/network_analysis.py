@@ -161,13 +161,20 @@ def run_network_analysis(book_path, characters_df, output_dir):
         print("Pyvis não está instalado. Pule a geração de HTML. Execute: pip install pyvis")
         
     # 6. Retorna métricas para o DataFrame Mestre (Etapa 3 futura)
-    # Por enquanto, apenas imprime o resultado do personagem mais conectado
     
     # Converte métricas para DataFrame para fácil inspeção
-    metrics_df = pd.DataFrame(G.nodes(data=True))
-    metrics_df = metrics_df.apply(lambda x: x[1] if isinstance(x[1], dict) else x, axis=1, result_type='expand')
-    metrics_df = metrics_df.rename(columns={0: 'character_name'})
+    # Cria o DataFrame a partir dos nós, expandindo o dicionário de atributos
+    metrics_data = []
+    for node, attributes in G.nodes(data=True):
+        attributes['character_name'] = node  # Adiciona o nome do personagem
+        metrics_data.append(attributes)
+        
+    metrics_df = pd.DataFrame(metrics_data)
     
+    # Encontra o personagem com maior Centralidade de Grau
     top_degree_char = metrics_df.sort_values(by='degree_centrality', ascending=False).iloc[0]
+    
     print(f"\nPersonagem com maior Centralidade de Grau:")
     print(f"  > {top_degree_char['character_name']}: {top_degree_char['degree_centrality']:.4f}")
+    
+    return metrics_df
